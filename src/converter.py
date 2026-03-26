@@ -19,7 +19,9 @@ def celsius_to_kelvin(c: float) -> float:
     """Convert Celsius to Kelvin
     """
     if c < ABSOLUTE_ZERO_C:
-        raise ValueError("Celsius value cannot be below absolute zero ({ABSOLUTE_ZERO_C})")
+        raise ValueError(
+            f"Celsius value cannot be below absolute zero ({ABSOLUTE_ZERO_C})"
+        )
     return c - ABSOLUTE_ZERO_C
 
 
