@@ -1,16 +1,25 @@
 import pytest
-from src.converter import celsius_to_fahrenheit, celsius_to_kelvin, kelvin_to_celsius, convert, ABSOLUTE_ZERO_C
+from src.converter import (
+    celsius_to_fahrenheit,
+    celsius_to_kelvin,
+    kelvin_to_celsius,
+    convert,
+    ABSOLUTE_ZERO_C
+)
 
 # ── Basic tests using fixtures ──────────────────────────────────
+
 
 def test_freezing_c_to_f(freezing_point):
     # freezing_point is injected from conftest.py
     assert celsius_to_fahrenheit(freezing_point["C"]) == freezing_point["F"]
 
+
 def test_boiling_c_to_f(boiling_point):
     assert celsius_to_fahrenheit(boiling_point["C"]) == boiling_point["F"]
 
 # ── Parametrize for multiple conversion cases ───────────────────
+
 
 @pytest.mark.parametrize("c, expected_f", [
     (0,    32.0),   # freezing
@@ -23,6 +32,7 @@ def test_c_to_f_cases(c, expected_f):
 
 # ── Edge cases ──────────────────────────────────────────────────
 
+
 @pytest.mark.edge
 def test_absolute_zero_kelvin():
     assert celsius_to_kelvin(-273.15) == pytest.approx(0.0)
@@ -33,10 +43,12 @@ def test_below_absolute_zero_c_raises():
     with pytest.raises(ValueError):
         celsius_to_kelvin(-300)
 
+
 @pytest.mark.edge
 def test_below_absolute_zero_k_raises():
     with pytest.raises(ValueError):
         kelvin_to_celsius(-0.1)
+
 
 @pytest.mark.edge
 def test_convert_same_unit():
@@ -58,4 +70,7 @@ def test_convert_with_invalid_unit_raises():
     (-ABSOLUTE_ZERO_C, 'K', 'F', 32.0)
 ])
 def test_all_convert_cases(value, from_unit, to_unit, expected_f):
-    assert convert(value, from_unit, to_unit) == pytest.approx(expected_f, rel=1e-3)
+    assert (
+        convert(value, from_unit, to_unit) ==
+        pytest.approx(expected_f, rel=1e-3)
+    )
